@@ -1,20 +1,20 @@
 import requests 
 from twilio.rest import Client
 import os 
-import sys
+
 
 OMW_endpoint = "https://api.openweathermap.org/data/2.5/forecast"
-api_key = "47d534d32cb79c15c0e627ce3ebee159"
+api_key = os.getenv('OWN_API_KEY')
 
 parameters = {
-    "lat":28.644800,
-    "lon": 77.216721,
-    "cnt":4,
+    "lat":os.getenv('LAT'),
+    "lon":os.getenv('LON'),
+    "cnt":os.getenv('CNT'),
     "appid": api_key
 }
 
-account_sid = "AC6cdd70db9a75e4f657dddb59aeddcde7"
-auth_token = "52664beda8983ebe097c48ed7bdb3651"
+account_sid = os.getenv('TWILIO_SID')
+auth_token = os.getenv('TWILIO_AUTH_TOKEN')
 
 response = requests.get(OMW_endpoint, params=parameters)
 data = response.json()
@@ -29,7 +29,7 @@ if will_rain:
     client = Client(account_sid, auth_token)
     message = client.messages.create(
             body = 'It might rain today!☂️',
-            from_ = '+15136438662',
-            to = '+919582548338'
+            from_ = os.getenv('TWILIO_FROM'),
+            to = os.getenv('TWILIO_TO')
         )
     print(message.status)
